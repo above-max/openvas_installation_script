@@ -93,8 +93,6 @@ function _killing_services() {
 }
 
 function _launch_services() {
-  echo "-- REBUILDING NVT"
-  /usr/local/sbin/openvasmd --rebuild --progress
   echo "-- LAUNCHING SERVICES"
   echo "		-- Reload config for redis-server"
   redis-server /etc/redis/redis.conf
@@ -108,9 +106,9 @@ function _launch_services() {
   /usr/local/sbin/gsad
 }
 
-function _check_install() {
-  DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
-  ./${DIR}/openvas-check-setup --v9
+function _rebuild() {
+  echo "-- REBUILDING NVT"
+  /usr/local/sbin/openvasmd --rebuild --progress
 }
 
 function _show_usage() {
@@ -161,9 +159,9 @@ case $opt in
                 _launch_services
                 echo "OpenVAS is running on https://localhost:9392"
                 ;;
-         "--check")
-                echo "Check installation..."
-                #_check_install
+         "--rebuild")
+                echo "Rebuild nvt's..."
+                _rebuild
                 ;;
         *)
         	    echo "OpenVAS9 installer shell script utility"
