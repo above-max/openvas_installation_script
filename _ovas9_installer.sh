@@ -113,21 +113,43 @@ function _show_usage() {
 
 opt=$1
 case $opt in
-        sql)
-                echo "Running mysql backup using mysqldump tool..."
+        "--install-pre")
+                echo "Downloading / installing needed dependencies..."
                 ;;
-        sync)
-                echo "Running backup using rsync tool..."
+        "--get-src")
+                echo "Downloading sources..."
                 ;;
-        tar)
-                echo "Running tape backup using tar tool..."
+        "--install-src")
+                echo "Building / installing source files..."
+                ;;
+        "--configure")
+                echo "Configuring openVAS9..."
+                ;;
+        "--create-usr")
+                echo "Creating user..."
+                ;;
+        "--update")
+                echo "Running update..."
+                ;;
+         "--kill-services")
+                echo "Shutting down active services..."
+                ;;
+         "--start")
+                echo "Starting services..."
+                echo "OpenVAS is running on https://localhost:9393"
                 ;;
         *)
-        	    echo "Backup shell script utility"
-                echo "Usage: $0 {sql|sync|tar}"
-                echo "	sql  : Run mySQL backup utility."
-                echo "	sync : Run web server backup utility."	
-                echo "	tar  : Run tape backup utility."	;;
+        	    echo "OpenVAS9 installer shell script utility"
+                echo "Usage: $0 OPTION"
+                echo "Available OPTIONS:"
+                echo "	--install-pre  : Download needed Ubuntu 16.04 packages"
+                echo "	--get-src  : Download needed source files/ folders for OpenVAS"
+                echo "	--install-src  : Download needed source files/ folders for OpenVAS"
+                echo "	--configure  : Create certificates and prepare redis-server"
+                echo "	--create-usr  : Download needed source files/ folders for OpenVAS" 
+                echo "	--update  : Run sync for nvt, scapdata and certdata"
+                echo "	--kill-services  : Shutdown running services before launching OpenVAS9" 
+                echo "  --start  : Start openVAS"  ;;
 esac
 
 
