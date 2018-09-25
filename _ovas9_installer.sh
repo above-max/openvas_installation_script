@@ -1,7 +1,6 @@
 #!/bin/bash
 
 BASE=openvas
-ASTERIKS="*"
 NOCERT="--no-check-certificate"
 GSA="greenbone-security-assistant-"
 
@@ -33,14 +32,14 @@ function _install_sources() {
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
   do
-      cd ${DIR}/${BASE}$p${ASTERIKS}/
+      cd ${DIR}/${BASE}$p"*"/
       mkdir source && cd source
       cmake ..
       make
       make install && cd ../../
       echo "( OK ) - $p installed"
   done
-  cd ${DIR}/$GSA${ASTERIKS}/
+  cd ${DIR}/$GSA"*"/
   mkdir source && cd source
   cmake ..
   make
