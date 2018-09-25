@@ -21,10 +21,9 @@ function _get_sources() {
   #wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
   #wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
   wget https://svn.wald.intevation.org/svn/openvas/branches/tools-attic/openvas-check-setup ${NOCERT}
-  
+  echo "-- Unpacking files..."
   find . -name \*.gz -exec tar zxvfp {} \;
   chmod +x openvas-check-setup
-  
   echo "-- Removing *.tar.gz files"
   rm *.tar.gz
 }
