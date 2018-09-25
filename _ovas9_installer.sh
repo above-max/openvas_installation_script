@@ -17,10 +17,12 @@ function _get_sources() {
   wget http://wald.intevation.org/frs/download.php/2429/greenbone-security-assistant-7.0.2.tar.gz ${NOCERT}
   wget http://wald.intevation.org/frs/download.php/2397/openvas-cli-1.4.5.tar.gz ${NOCERT}
   wget http://wald.intevation.org/frs/download.php/2377/openvas-smb-1.0.4.tar.gz ${NOCERT}
-  wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
-  wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
+  #wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
+  #wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
+  wget https://svn.wald.intevation.org/svn/openvas/branches/tools-attic/openvas-check-setup ${NOCERT}
   
   find . -name \*.gz -exec tar zxvfp {} \;
+  chmod +x openvas-check-setup
 }
 
 function _install_sources() {
@@ -105,7 +107,22 @@ function _launch_services() {
   /usr/local/sbin/gsad
 }
 
-echo "${_package_list}"
+function _show_usage() {
+  echo "Usage: ./_ovas9_installer.sh OPTION
+}
+
+if [ "$1" == "--help" ] || [ "$1" == "-h" ] || [ "$1" == "?" ]
+  then _show_usage
+
+case $option in
+   "--get-sources") _get_seources;;
+   "van") echo "For $rental rental is Rs.10 per k/m.";;
+   "jeep") echo "For $rental rental is Rs.5 per k/m.";;
+   "bicycle") echo "For $rental rental 20 paisa per k/m.";;
+   "enfield") echo "For $rental rental Rs.3  per k/m.";;
+   "thunderbird") echo "For $rental rental Rs.5 per k/m.";;
+   *) echo "Sorry, I can not get a $rental rental  for you!";;
+esac
 
 
 
