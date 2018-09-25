@@ -19,6 +19,96 @@ function _get_sources() {
   wget http://wald.intevation.org/frs/download.php/2377/openvas-smb-1.0.4.tar.gz ${NOCERT}
   wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
   wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
+  
+  _unpack_sources
 }
 
-_get_sources
+function _unpack_sources() {
+  find . -name \*.gz -exec tar zxvfp {} \;
+}
+
+function _install_sources() {
+  echo "-- BUILDING SOURCES"
+  DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
+  for p in "${_package_list[@]}"
+  do
+    if ["$p" = "greenbone-security-assistant"]; then
+      G="greenbone-security-assistant"
+      cd ${DIR}/${BASE}$G${ASTERIKS}/
+      mkdir source && cd source
+      cmake ..
+      make
+      make install && cd ../../
+    else
+      cd ${DIR}/${BASE}$p${ASTERIKS}/
+      mkdir source && cd source
+      cmake ..
+      make
+      make install && cd ../../
+     fi
+     echo "( OK ) - $p installed"
+}
+
+function _start_configuration() {
+  echo "-- CONFIGURATION"
+  echo "		-- configure redis-server"
+  cp /etc/redis/redis.conf /etc/redis/redis.orig
+  echo „unixsocket /tmp/redis.sock“ >> /etc/redis/redis.conf
+  echo „unixsocketperm 700“ >> /etc/redis/redis.conf
+  service redis-server restart
+  echo "		-- manage certificates"
+  openvas-manage-certs –a
+  echo "		-- create, udpate and remove symbolic links"
+  ldconfig
+  echo "CONFIGURATION COMPLETE"
+}
+
+function _create_user() {
+  echo "-- CREATE USER"
+  echo "Whats the name of the new user? "
+  read name
+  openvasmd --create-user=$name --role=Admin
+  echo "Set you new password: "
+  read pw
+  openvasmd --user=$name --new-password=$pw
+  
+}
+
+function _update_base() {
+  echo "-- UPDATINE DATA"
+  echo "		-- Run nvt sync"
+  /usr/local/sbin/greenbone-nvt-sync
+  echo "		-- Run scapdata sync"
+  /usr/local/sbin/greenbone-scapdata-sync
+  echo "		-- Run certdata sync"
+  /usr/local/sbin/greenbone-certdata-sync
+}
+
+function _killing_services() {
+  echo "-- KILLING PROCESSES"
+  echo "		-- openvas"
+  echo "		-- gsad"
+  echo "		-- redis"
+  ps aux | egrep "(openvas|gsad|redis-server)" | awk '{print $2}' | xargs -i kill -9 '{}'
+  service redis-server stop
+  
+}
+
+function _launch_services() {
+  echo "-- LAUNCHING SERVICES"
+  echo "		-- Reload config for redis-server"
+  redis-server /etc/redis/redis.conf
+  echo "		-- Start redis-server"
+  /etc/init.d/redis-server start
+  echo "		-- Start openvasmd"
+  /usr/local/sbin/openvasmd
+  echo "		-- Start openvassd"
+  /usr/local/sbin/openvassd
+  echo "		-- Start gsad"
+  /usr/local/sbin/gsad
+}
+
+echo "${_package_list}"
+
+
+
