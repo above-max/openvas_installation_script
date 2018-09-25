@@ -54,7 +54,7 @@ function _start_configuration() {
   cp /etc/redis/redis.conf /etc/redis/redis.orig
   echo „unixsocket /tmp/redis.sock“ >> /etc/redis/redis.conf
   echo „unixsocketperm 700“ >> /etc/redis/redis.conf
-  service redis-server restart
+  #service redis-server restart
   echo "		-- manage certificates"
   openvas-manage-certs –a
   echo "		-- create, udpate and remove symbolic links"
@@ -67,7 +67,7 @@ function _create_user() {
   echo "Whats the name of the new user? "
   read name
   openvasmd --create-user=$name --role=Admin
-  echo "Set you new password: "
+  echo "Set new password for $name: "
   read pw
   openvasmd --user=$name --new-password=$pw
   
