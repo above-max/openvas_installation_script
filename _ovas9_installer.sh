@@ -57,7 +57,7 @@ function _start_configuration() {
   #service redis-server restart
   echo "		-- manage certificates"
   openvas-manage-certs –a
-  echo "		-- create, udpate and remove symbolic links"
+  echo "		-- create, update and remove symbolic links"
   ldconfig
   echo "CONFIGURATION COMPLETE"
 }
