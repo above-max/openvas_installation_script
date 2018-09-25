@@ -92,6 +92,11 @@ function _killing_services() {
   
 }
 
+function _rebuild() {
+  echo "-- REBUILDING NVT"
+  /usr/local/sbin/openvasmd --rebuild --progress
+}
+
 function _launch_services() {
   echo "-- LAUNCHING SERVICES"
   echo "		-- Reload config for redis-server"
@@ -104,11 +109,6 @@ function _launch_services() {
   /usr/local/sbin/openvassd
   echo "		-- Start gsad"
   /usr/local/sbin/gsad
-}
-
-function _rebuild() {
-  echo "-- REBUILDING NVT"
-  /usr/local/sbin/openvasmd --rebuild --progress
 }
 
 function _show_usage() {
@@ -154,14 +154,14 @@ case $opt in
                 echo "Shutting down active services..."
                 _killing_services
                 ;;
+         "--rebuild")
+                echo "Rebuild nvt's..."
+                _rebuild
+                ;;
          "--start")
                 echo "Starting services..."
                 _launch_services
                 echo "OpenVAS is running on https://localhost:9392"
-                ;;
-         "--rebuild")
-                echo "Rebuild nvt's..."
-                _rebuild
                 ;;
         *)
         	    echo "OpenVAS9 installer shell script utility"
