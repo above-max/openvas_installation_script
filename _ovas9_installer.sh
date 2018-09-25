@@ -108,7 +108,16 @@ function _launch_services() {
 }
 
 function _show_usage() {
-  echo "Usage: ./_ovas9_installer.sh OPTION"
+  echo "Usage: $0 OPTION"
+                echo "Available OPTIONS:"
+                echo "	--install-pre  : Download needed Ubuntu 16.04 packages"
+                echo "	--get-src  : Download needed source files/ folders for OpenVAS"
+                echo "	--install-src  : Download needed source files/ folders for OpenVAS"
+                echo "	--configure  : Create certificates and prepare redis-server"
+                echo "	--create-usr  : Download needed source files/ folders for OpenVAS" 
+                echo "	--update  : Run sync for nvt, scapdata and certdata"
+                echo "	--kill-services  : Shutdown running services before launching OpenVAS9" 
+                echo "	--start  : Launch OpenVAS9"
 }
 
 opt=$1
@@ -136,20 +145,11 @@ case $opt in
                 ;;
          "--start")
                 echo "Starting services..."
-                echo "OpenVAS is running on https://localhost:9393"
+                echo "OpenVAS is running on https://localhost:9392"
                 ;;
         *)
         	    echo "OpenVAS9 installer shell script utility"
-                echo "Usage: $0 OPTION"
-                echo "Available OPTIONS:"
-                echo "	--install-pre  : Download needed Ubuntu 16.04 packages"
-                echo "	--get-src  : Download needed source files/ folders for OpenVAS"
-                echo "	--install-src  : Download needed source files/ folders for OpenVAS"
-                echo "	--configure  : Create certificates and prepare redis-server"
-                echo "	--create-usr  : Download needed source files/ folders for OpenVAS" 
-                echo "	--update  : Run sync for nvt, scapdata and certdata"
-                echo "	--kill-services  : Shutdown running services before launching OpenVAS9" 
-                echo "  --start  : Start openVAS"  ;;
+              _show_usage  ;;
 esac
 
 
