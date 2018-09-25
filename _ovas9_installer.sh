@@ -3,9 +3,9 @@
 BASE=openvas
 ASTERIKS="*"
 NOCERT="--no-check-certificate"
-G="greenbone-security-assistant-"
+GSA="greenbone-security-assistant-"
 
-declare -a _package_list=("-smb-" "-libraries-" "-scanner-" "-manager-" "-cli-" "greenbone-security-assistant-")
+declare -a _package_list=("-smb-" "-libraries-" "-scanner-" "-manager-" "-cli-")
 
 function _install_prerequisites() {
   apt install -y build-essential cmake gcc-mingw-w64 libgnutls28-dev perl-base heimdal-dev libpopt-dev libglib2.0-dev libssh-dev libpcap-dev libgpgme11-dev uuid-dev bison libksba-dev libhiredis-dev libsnmp-dev libgcrypt20-dev libldap2-dev libfreeradius-client-dev doxygen xmltoman sqlfairy sqlite3 redis-server gnutls-bin libsqlite3-dev texlive texlive-lang-german texlive-lang-english texlive-latex-recommended texlive-latex-extra libmicrohttpd-dev libxml2-dev libxslt1.1 xsltproc flex clang nmap rpm nsis alien
@@ -31,13 +31,6 @@ function _install_sources() {
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
   do
-    if [$p == "greenbone-security-assistant-"]; then
-      cd ${DIR}/$G${ASTERIKS}/
-      mkdir source && cd source
-      cmake ..
-      make
-      make install && cd ../../
-    else
       cd ${DIR}/${BASE}$p${ASTERIKS}/
       mkdir source && cd source
       cmake ..
@@ -46,6 +39,12 @@ function _install_sources() {
      fi
      #echo "( OK ) - $p installed"
   done
+  cd ${DIR}/$GSA${ASTERIKS}/
+  mkdir source && cd source
+  cmake ..
+  make
+  make install && cd ../../
+  
 }
 
 function _start_configuration() {
