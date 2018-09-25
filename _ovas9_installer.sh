@@ -94,7 +94,7 @@ function _killing_services() {
 
 function _launch_services() {
   echo "-- REBUILDING NVT"
-  /usr/local/sbin/openvassmd --rebuild --progress
+  /usr/local/sbin/openvasmd --rebuild --progress
   echo "-- LAUNCHING SERVICES"
   echo "		-- Reload config for redis-server"
   redis-server /etc/redis/redis.conf
