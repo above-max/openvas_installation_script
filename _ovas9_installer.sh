@@ -39,8 +39,7 @@ function _install_sources() {
       cmake ..
       make
       make install && cd ../../
-     fi
-     #echo "( OK ) - $p installed"
+      echo "( OK ) - $p installed"
   done
   cd ${DIR}/$GSA${ASTERIKS}/
   mkdir source && cd source
