@@ -3,6 +3,7 @@
 BASE=openvas
 ASTERIKS="*"
 NOCERT="--no-check-certificate"
+G="greenbone-security-assistant-"
 
 declare -a _package_list=("-smb-" "-libraries-" "-scanner-" "-manager-" "-cli-" "greenbone-security-assistant-")
 
@@ -30,8 +31,7 @@ function _install_sources() {
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
   do
-    if ["$p" = "greenbone-security-assistant"]; then
-      G="greenbone-security-assistant-"
+    if [$p == "greenbone-security-assistant-"]; then
       cd ${DIR}/$G${ASTERIKS}/
       mkdir source && cd source
       cmake ..
