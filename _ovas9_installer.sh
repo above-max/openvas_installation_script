@@ -108,7 +108,7 @@ function _launch_services() {
 }
 
 function _show_usage() {
-  echo "Usage: ./_ovas9_installer.sh OPTION
+  echo "Usage: ./_ovas9_installer.sh OPTION"
 }
 
 opt=$1
