@@ -163,7 +163,7 @@ case $opt in
                 ;;
          "--check")
                 echo "Check installation..."
-                _check_install
+                #_check_install
                 ;;
         *)
         	    echo "OpenVAS9 installer shell script utility"
