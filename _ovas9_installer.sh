@@ -111,17 +111,23 @@ function _show_usage() {
   echo "Usage: ./_ovas9_installer.sh OPTION
 }
 
-if [ "$1" == "--help" ] || [ "$1" == "-h" ] || [ "$1" == "?" ]
-  then _show_usage
-
-case $option in
-   "--get-sources") _get_seources;;
-   "van") echo "For $rental rental is Rs.10 per k/m.";;
-   "jeep") echo "For $rental rental is Rs.5 per k/m.";;
-   "bicycle") echo "For $rental rental 20 paisa per k/m.";;
-   "enfield") echo "For $rental rental Rs.3  per k/m.";;
-   "thunderbird") echo "For $rental rental Rs.5 per k/m.";;
-   *) echo "Sorry, I can not get a $rental rental  for you!";;
+opt=$1
+case $opt in
+        sql)
+                echo "Running mysql backup using mysqldump tool..."
+                ;;
+        sync)
+                echo "Running backup using rsync tool..."
+                ;;
+        tar)
+                echo "Running tape backup using tar tool..."
+                ;;
+        *)
+        	    echo "Backup shell script utility"
+                echo "Usage: $0 {sql|sync|tar}"
+                echo "	sql  : Run mySQL backup utility."
+                echo "	sync : Run web server backup utility."	
+                echo "	tar  : Run tape backup utility."	;;
 esac
 
 
