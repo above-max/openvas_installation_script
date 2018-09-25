@@ -20,10 +20,6 @@ function _get_sources() {
   wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
   wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
   
-  _unpack_sources
-}
-
-function _unpack_sources() {
   find . -name \*.gz -exec tar zxvfp {} \;
 }
 
@@ -33,8 +29,8 @@ function _install_sources() {
   for p in "${_package_list[@]}"
   do
     if ["$p" = "greenbone-security-assistant"]; then
-      G="greenbone-security-assistant"
-      cd ${DIR}/${BASE}$G${ASTERIKS}/
+      G="greenbone-security-assistant-"
+      cd ${DIR}/$G${ASTERIKS}/
       mkdir source && cd source
       cmake ..
       make
@@ -46,7 +42,7 @@ function _install_sources() {
       make
       make install && cd ../../
      fi
-     echo "( OK ) - $p installed"
+     #echo "( OK ) - $p installed"
   done
 }
 
