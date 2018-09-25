@@ -24,6 +24,9 @@ function _get_sources() {
   
   find . -name \*.gz -exec tar zxvfp {} \;
   chmod +x openvas-check-setup
+  
+  echo "-- Removing *.tar.gz files"
+  rm *.tar.gz
 }
 
 function _install_sources() {
