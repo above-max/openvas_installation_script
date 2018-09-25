@@ -107,6 +107,11 @@ function _launch_services() {
   /usr/local/sbin/gsad
 }
 
+function _check_install() {
+  DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
+  ./${DIR}/openvas-check-setup --v9
+}
+
 function _show_usage() {
   echo "Usage: $0 OPTION"
                 echo "Available OPTIONS:"
@@ -154,6 +159,10 @@ case $opt in
                 echo "Starting services..."
                 _launch_services
                 echo "OpenVAS is running on https://localhost:9392"
+                ;;
+         "--check")
+                echo "Check installation..."
+                _check_install
                 ;;
         *)
         	    echo "OpenVAS9 installer shell script utility"
