@@ -47,6 +47,7 @@ function _install_sources() {
       make install && cd ../../
      fi
      echo "( OK ) - $p installed"
+  done
 }
 
 function _start_configuration() {
