@@ -124,7 +124,7 @@ opt=$1
 case $opt in
         "--install-pre")
                 echo "Downloading / installing needed dependencies..."
-                _install_prerequisite
+                _install_prerequisites
                 ;;
         "--get-src")
                 echo "Downloading sources..."
