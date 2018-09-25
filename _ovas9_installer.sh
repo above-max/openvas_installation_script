@@ -74,7 +74,7 @@ function _create_user() {
 }
 
 function _update_base() {
-  echo "-- UPDATINE DATA"
+  echo "-- UPDATING DATA"
   echo "		-- Run nvt sync"
   /usr/local/sbin/greenbone-nvt-sync
   echo "		-- Run scapdata sync"
@@ -124,27 +124,35 @@ opt=$1
 case $opt in
         "--install-pre")
                 echo "Downloading / installing needed dependencies..."
+                _install_prerequisite
                 ;;
         "--get-src")
                 echo "Downloading sources..."
+                _get_sources
                 ;;
         "--install-src")
                 echo "Building / installing source files..."
+                _install_sources
                 ;;
         "--configure")
                 echo "Configuring openVAS9..."
+                _start_configuration
                 ;;
         "--create-usr")
                 echo "Creating user..."
+                _create_user
                 ;;
         "--update")
                 echo "Running update..."
+                _update_base
                 ;;
          "--kill-services")
                 echo "Shutting down active services..."
+                _killing_services
                 ;;
          "--start")
                 echo "Starting services..."
+                _launch_services
                 echo "OpenVAS is running on https://localhost:9392"
                 ;;
         *)
