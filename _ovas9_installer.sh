@@ -8,11 +8,13 @@ HINT="*"
 declare -a _package_list=("-smb-" "-libraries-" "-scanner-" "-manager-" "-cli-")
 
 function _install_prerequisites() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- DOWNLOADING DEPENDENCIES -- ☰☰☰☰☰☰☰☰☰☰"
   apt install -y build-essential cmake gcc-mingw-w64 libgnutls28-dev perl-base heimdal-dev libpopt-dev libglib2.0-dev libssh-dev libpcap-dev libxslt1-dev libgpgme11-dev uuid-dev bison libksba-dev libhiredis-dev libsnmp-dev libgcrypt20-dev libldap2-dev  libfreeradius-client-dev doxygen python-setuptools python-paramiko python-polib xmltoman sqlfairy sqlite3 redis-server gnutls-bin libsqlite3-dev texlive texlive-lang-german texlive-lang-english texlive-latex-recommended texlive-latex-extra libmicrohttpd-dev libxml2-dev libxslt1.1 xsltproc flex clang nmap rpm nsis alien checkinstall
 }
 
 function _get_sources() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- DOWNLOADING SOURCES -- ☰☰☰☰☰☰☰☰☰☰"
   wget http://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz ${NOCERT}
   echo "  ✔ - openvas-libraries-9.9.1 downloaded "
@@ -39,6 +41,7 @@ function _get_sources() {
 }
 
 function _install_sources() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- BUILDING SOURCES -- ☰☰☰☰☰☰☰☰☰☰"
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
@@ -75,6 +78,8 @@ function _install_sources() {
 }
 
 function _remove_all() {
+    echo " "
+    echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REMOVING PACKAGES -- ☰☰☰☰☰☰☰☰☰☰"
     dpkg -r "openvas-smb"
     echo " ✔ - openvas-smb removed"
     dpkg -r "openvas-libraries"
@@ -90,6 +95,7 @@ function _remove_all() {
 }
 
 function _start_configuration() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- CONFIGURATION -- ☰☰☰☰☰☰☰☰☰☰"
   cp /etc/redis/redis.conf /etc/redis/redis.orig
   echo " ✔ - redis.conf backup complete"
@@ -106,6 +112,7 @@ function _start_configuration() {
 }
 
 function _create_user() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- CREATE USER -- ☰☰☰☰☰☰☰☰☰☰ "
   echo " ↪ Whats the name of the new user? "
   read name
@@ -117,6 +124,7 @@ function _create_user() {
 }
 
 function _update_base() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- UPDATING DATA -- ☰☰☰☰☰☰☰☰☰☰ "
   /usr/local/sbin/greenbone-nvt-sync
   echo " ✔ - nvt sync done"
@@ -127,6 +135,7 @@ function _update_base() {
 }
 
 function _killing_services() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- KILLING PROCESSES -- ☰☰☰☰☰☰☰☰☰☰ "
   ps aux | egrep "(openvas|gsad|redis-server)" | awk '{print $2}' | xargs -i kill -9 '{}'
   echo " ✔ openvas killed"
@@ -136,6 +145,7 @@ function _killing_services() {
 }
 
 function _rebuild() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REBUILDING NVT -- ☰☰☰☰☰☰☰☰☰☰"
   /usr/local/sbin/openvasmd --rebuild --progress
   #/usr/local/sbin/openvasmd
@@ -145,6 +155,7 @@ function _rebuild() {
 }
 
 function _launch_services() {
+  echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- LAUNCHING SERVICES -- ☰☰☰☰☰☰☰☰☰☰"
   redis-server /etc/redis/redis.conf
   echo " ✔ - config for redis-server reloaded"
@@ -159,6 +170,7 @@ function _launch_services() {
 }
 
 function _show_usage() {
+  echo " "
   echo "Usage: $0 OPTION"
                 echo "Available OPTIONS:"
                 echo "	--install-pre  : Download needed Ubuntu 16.04 packages"
@@ -167,8 +179,8 @@ function _show_usage() {
                 echo "	--configure  : Create certificates and prepare redis-server"
                 echo "	--create-usr  : Create new user for OpenVAS WEBUI" 
                 echo "	--update  : Run sync for nvt, scapdata and certdata"
-                echo "	--kill-services  : Shutdown running services before launching OpenVAS9" 
-                echo "  --rebuild : Rebuild NVT's and cache"
+                echo "	--kill-services  : Shutdown running services before launching OpenVAS9"
+                echo "	--rebuild  : Rebuild NVT's and cache"
                 echo "	--start  : Launch OpenVAS9"
                 echo "	--remove  : Remove all packages"                
 }
