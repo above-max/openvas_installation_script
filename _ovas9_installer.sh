@@ -55,13 +55,13 @@ function _install_sources() {
       cmake ..
       echo " ➜ - run make"
       make
-      echo " ➜ - get version no. from openvas-$p"
-      version=`pwd | sed 's/\//\n/g' | grep "${BASE}$p" | sed "s/${BASE}$p//"`
-      echo " ➜ - openvas-$p using checkinstall"
-      checkinstall --pkgname "${BASE}$p$version" --version "$version" --maintainer "openvas_installation_script" -y
-      #echo " ➜ - run make install and cd out of openvas-$p"
-      #make install && cd ../../
-      cd ../../
+      #echo " ➜ - get version no. from openvas-$p"
+      #version=`pwd | sed 's/\//\n/g' | grep "${BASE}$p" | sed "s/${BASE}$p//"`
+      #echo " ➜ - openvas-$p using checkinstall"
+      #checkinstall --pkgname "${BASE}$p$version" --version "$version" --maintainer "openvas_installation_script" -y
+      echo " ➜ - run make install and cd out of openvas-$p"
+      make install && cd ../../
+      #cd ../../
       echo " ✔ - $p installed"
       echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
   done
@@ -69,13 +69,13 @@ function _install_sources() {
   mkdir source && cd source
   cmake ..
   make
-  echo " ➜ - get version no. from openvas-$p"
-  version=`pwd | sed 's/\//\n/g' | grep "$GSA" | sed "s/$GSA//"`
-  echo " ➜ - openvas-$p using checkinstall"
-  checkinstall --pkgname "GSA$version" --version "$version" --maintainer "openvas_installation_script" -y
-  #echo " ➜ - run make install and cd out of openvas-$p"
-  #make install && cd ../../
-  cd ../../
+  #echo " ➜ - get version no. from openvas-$p"
+  #version=`pwd | sed 's/\//\n/g' | grep "$GSA" | sed "s/$GSA//"`
+  #echo " ➜ - openvas-$p using checkinstall"
+  #checkinstall --pkgname "GSA$version" --version "$version" --maintainer "openvas_installation_script" -y
+  echo " ➜ - run make install and cd out of openvas-$p"
+  make install && cd ../../
+  #cd ../../
   echo " ✔ - $GSA installed"
   echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
 }
@@ -185,7 +185,7 @@ function _show_usage() {
                 echo "	--kill-services  : Shutdown running services before launching OpenVAS9"
                 echo "	--rebuild  : Rebuild NVT's and cache"
                 echo "	--start  : Launch OpenVAS9"
-                echo "	--remove  : Remove all packages"                
+                #echo "	--remove  : Remove all packages"                
 }
 
 opt=$1
