@@ -129,8 +129,8 @@ function _launch_services() {
   echo " ✔ - openvasmd started"
   /usr/local/sbin/openvassd
   echo " ✔ - openvassd started"
-  echo "✔ - gsad started"
   /usr/local/sbin/gsad
+  echo "✔ - gsad started"
 }
 
 function _show_usage() {
