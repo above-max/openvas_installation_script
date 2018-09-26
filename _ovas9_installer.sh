@@ -182,7 +182,7 @@ function _show_usage() {
                 echo "	--kill-services  : Shutdown running services before launching OpenVAS9"
                 echo "	--rebuild  : Rebuild NVT's and cache"
                 echo "	--start  : Launch OpenVAS9"
-                echo "	--remove  : Remove all packages"                
+                #echo "	--remove  : Remove all packages"                
 }
 
 opt=$1
@@ -215,13 +215,8 @@ case $opt in
                 _launch_services
                 #echo "OpenVAS is running on https://localhost:9392"
                 ;;
-         "--remove")
-                _remove_all
-                ;;
+
         *)
         	    echo "OpenVAS9 installer shell script utility"
               _show_usage  ;;
 esac
-
-
-
