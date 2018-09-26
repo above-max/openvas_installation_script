@@ -3,6 +3,7 @@
 BASE=openvas
 NOCERT="--no-check-certificate"
 GSA="greenbone-security-assistant-"
+HINT="*"
 
 declare -a _package_list=("-smb-" "-libraries-" "-scanner-" "-manager-" "-cli-")
 
@@ -32,14 +33,14 @@ function _install_sources() {
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
   do
-      cd ${DIR}/${BASE}$p"*"/
+      cd ${DIR}/${BASE}$p${HINT}/
       mkdir source && cd source
       cmake ..
       make
       make install && cd ../../
       echo "( OK ) - $p installed"
   done
-  cd ${DIR}/$GSA"*"/
+  cd ${DIR}/$GSA${HINT}/
   mkdir source && cd source
   cmake ..
   make
@@ -58,7 +59,6 @@ function _start_configuration() {
   openvas-manage-certs –a
   echo "		-- create, update and remove symbolic links"
   ldconfig
-  echo "CONFIGURATION COMPLETE"
 }
 
 function _create_user() {
@@ -121,6 +121,7 @@ function _show_usage() {
                 echo "	--create-usr  : Create new user for OpenVAS WEBUI" 
                 echo "	--update  : Run sync for nvt, scapdata and certdata"
                 echo "	--kill-services  : Shutdown running services before launching OpenVAS9" 
+                echo "  --rebuild : Rebuild NVT's and cache"
                 echo "	--start  : Launch OpenVAS9"
 }
 
