@@ -51,8 +51,12 @@ function _install_sources() {
       cmake ..
       echo " ➜ - run make"
       make
-      echo " ➜ - run make install and cd out from openvas-$p"
-      make install && cd ../../
+      echo " ➜ - get version no. from openvas-$p"
+      version=`pwd | sed 's/\//\n/g' | grep "${BASE}$p" | sed "s/${BASE}$p//"`
+      echo " ➜ - openvas-$p using checkinstall"
+      checkinstall --pkgname "${BASE}$p" --pkgversion "$version" --maintainer "openvas_installation_script" -y
+      #make install && cd ../../
+      cd ../../
       echo " ✔ - $p installed"
       echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
   done
@@ -60,9 +64,29 @@ function _install_sources() {
   mkdir source && cd source
   cmake ..
   make
-  make install && cd ../../
+  echo " ➜ - get version no. from openvas-$p"
+  version=`pwd | sed 's/\//\n/g' | grep "$GSA" | sed "s/$GSA//"`
+  echo " ➜ - openvas-$p using checkinstall"
+  checkinstall --pkgname "GSA" --pkgversion "$version" --maintainer "openvas_installation_script" -y
+  #make install && cd ../../
+  cd ../../
   echo " ✔ - $GSA installed"
   echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
+}
+
+function _remove_all() {
+    dpkg -r "openvas-smb"
+    echo " ✔ - openvas-smb removed"
+    dpkg -r "openvas-libraries"
+    echo " ✔ - libraries removed"
+    dpkg -r "openvas-scanner"
+    echo " ✔ - openvas-scanner removed"
+    dpkg -r "openvas-manager"
+    echo " ✔ - openvas-manager removed"
+    dpkg -r "openvas-cli"
+    echo " ✔ - openvas-cli removed"
+    dpkg -r "greenbone-security-assistant"
+    echo " ✔ - greenbone-security-assistant removed"
 }
 
 function _start_configuration() {
@@ -146,6 +170,7 @@ function _show_usage() {
                 echo "	--kill-services  : Shutdown running services before launching OpenVAS9" 
                 echo "  --rebuild : Rebuild NVT's and cache"
                 echo "	--start  : Launch OpenVAS9"
+                echo "	--remove  : Remove all packages"                
 }
 
 opt=$1
@@ -177,6 +202,9 @@ case $opt in
          "--start")
                 _launch_services
                 #echo "OpenVAS is running on https://localhost:9392"
+                ;;
+         "--remove")
+                _remove_all
                 ;;
         *)
         	    echo "OpenVAS9 installer shell script utility"
