@@ -113,9 +113,9 @@ function _killing_services() {
 function _rebuild() {
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REBUILDING NVT -- ☰☰☰☰☰☰☰☰☰☰"
   /usr/local/sbin/openvasmd --rebuild --progress
-  /usr/local/sbin/openvasmd
-  echo " ✔ start openvasmd"
-  /usr/local/sbin/openvasmd --http-only
+  #/usr/local/sbin/openvasmd
+  #echo " ✔ start openvasmd"
+  /usr/local/sbin/gsad --http-only
   echo " ✔ - set --http-only"
 }
 
@@ -130,7 +130,7 @@ function _launch_services() {
   /usr/local/sbin/openvassd
   echo " ✔ - openvassd started"
   /usr/local/sbin/gsad
-  echo "✔ - gsad started"
+  echo " ✔ - gsad started"
 }
 
 function _show_usage() {
