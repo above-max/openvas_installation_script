@@ -83,17 +83,17 @@ function _install_sources() {
 function _remove_all() {
     echo " "
     echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REMOVING PACKAGES -- ☰☰☰☰☰☰☰☰☰☰"
-    dpkg -r "openvas-smb"
+    dpkg -r "openvas-smb-"
     echo " ✔ - openvas-smb removed"
     dpkg -r "openvas-libraries"
     echo " ✔ - libraries removed"
-    dpkg -r "openvas-scanner"
+    dpkg -r "openvas-scanner-"
     echo " ✔ - openvas-scanner removed"
-    dpkg -r "openvas-manager"
+    dpkg -r "openvas-manager-"
     echo " ✔ - openvas-manager removed"
-    dpkg -r "openvas-cli"
+    dpkg -r "openvas-cli-"
     echo " ✔ - openvas-cli removed"
-    dpkg -r "greenbone-security-assistant"
+    dpkg -r "greenbone-security-assistant-"
     echo " ✔ - greenbone-security-assistant removed"
 }
 
