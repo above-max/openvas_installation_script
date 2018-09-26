@@ -17,23 +17,23 @@ function _get_sources() {
   echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- DOWNLOADING SOURCES -- ☰☰☰☰☰☰☰☰☰☰"
   wget http://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz ${NOCERT}
-  echo "  ✔ - openvas-libraries-9.9.1 downloaded "
+  echo " ✔ - openvas-libraries-9.9.1 downloaded "
   wget http://wald.intevation.org/frs/download.php/2423/openvas-scanner-5.1.1.tar.gz ${NOCERT}
-  echo "  ✔ - openvas-scanner-5.1.1 downloaded "
+  echo " ✔ - openvas-scanner-5.1.1 downloaded "
   wget http://wald.intevation.org/frs/download.php/2426/openvas-manager-7.0.2.tar.gz ${NOCERT}
-  echo "  ✔ - openvas-manager-7.0.2 downloaded "
+  echo " ✔ - openvas-manager-7.0.2 downloaded "
   wget http://wald.intevation.org/frs/download.php/2429/greenbone-security-assistant-7.0.2.tar.gz ${NOCERT}
-  echo "  ✔ - greenbone-security-assistent-7.0.2 downloaded "
+  echo " ✔ - greenbone-security-assistent-7.0.2 downloaded "
   wget http://wald.intevation.org/frs/download.php/2397/openvas-cli-1.4.5.tar.gz ${NOCERT}
-  echo "  ✔ - openvas-cli-1.4.5 downloaded "
+  echo " ✔ - openvas-cli-1.4.5 downloaded "
   wget http://wald.intevation.org/frs/download.php/2377/openvas-smb-1.0.4.tar.gz ${NOCERT}
-  echo "  ✔ - openvas-smb-1.0.4 downloaded "
+  echo " ✔ - openvas-smb-1.0.4 downloaded "
   #wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
   #wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
   wget https://svn.wald.intevation.org/svn/openvas/branches/tools-attic/openvas-check-setup ${NOCERT}
-  echo "  ✔ - openvas-check-setup script downloaded "
+  echo " ✔ - openvas-check-setup script downloaded "
   find . -name \*.gz -exec tar zxvfp {} \;
-  echo "  ✔ - downloaded files unpacked and folders created"
+  echo " ✔ - downloaded files unpacked and folders created"
   chmod +x openvas-check-setup
   echo " ✔ - openvas_check_setup is now executable"
   rm *.tar.gz
@@ -54,10 +54,10 @@ function _install_sources() {
       cmake ..
       echo " ➜ - run make"
       make
-      echo " ➜ - get version no. from openvas-$p"
-      version=`pwd | sed 's/\//\n/g' | grep "${BASE}$p" | sed "s/${BASE}$p//"`
+      #echo " ➜ - get version no. from openvas-$p"
+      #version=`pwd | sed 's/\//\n/g' | grep "${BASE}$p" | sed "s/${BASE}$p//"`
       echo " ➜ - openvas-$p using checkinstall"
-      checkinstall --pkgname "${BASE}$p" --pkgversion "$version" --maintainer "openvas_installation_script" -y
+      checkinstall --pkgname "${BASE}$p" --maintainer "openvas_installation_script" -y
       #make install && cd ../../
       cd ../../
       echo " ✔ - $p installed"
