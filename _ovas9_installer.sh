@@ -56,8 +56,8 @@ function _start_configuration() {
   echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
   echo "unixsocketperm 700" >> /etc/redis/redis.conf
   ln -s /var/run/redis/redis.sock /tmp/redis.sock
-  service redis-server restart 
-  openvas-manage-certs –a
+  service redis-server restart
+  openvas-manage-certs -a
   echo "-- create, update and remove symbolic links"
   ldconfig
 }
@@ -101,8 +101,6 @@ function _rebuild() {
 }
 
 function _launch_services() {
-  echo "-- Manage certs"
-  openvas-manage-certs -a
   echo "-- LAUNCHING SERVICES"
   echo "-- Reload config for redis-server"
   redis-server /etc/redis/redis.conf
