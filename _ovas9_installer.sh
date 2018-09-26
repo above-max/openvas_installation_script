@@ -80,6 +80,23 @@ function _install_sources() {
   echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
 }
 
+function _remove_all() {
+    echo " "
+    echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REMOVING PACKAGES -- ☰☰☰☰☰☰☰☰☰☰"
+    dpkg -r "openvas-smb"
+    echo " ✔ - openvas-smb removed"
+    dpkg -r "openvas-libraries"
+    echo " ✔ - libraries removed"
+    dpkg -r "openvas-scanner"
+    echo " ✔ - openvas-scanner removed"
+    dpkg -r "openvas-manager"
+    echo " ✔ - openvas-manager removed"
+    dpkg -r "openvas-cli"
+    echo " ✔ - openvas-cli removed"
+    dpkg -r "greenbone-security-assistant"
+    echo " ✔ - greenbone-security-assistant removed"
+}
+
 function _start_configuration() {
   echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- CONFIGURATION -- ☰☰☰☰☰☰☰☰☰☰"
@@ -168,7 +185,7 @@ function _show_usage() {
                 echo "	--kill-services  : Shutdown running services before launching OpenVAS9"
                 echo "	--rebuild  : Rebuild NVT's and cache"
                 echo "	--start  : Launch OpenVAS9"
-                #echo "	--remove  : Remove all packages"                
+                echo "	--remove  : Remove all packages"                
 }
 
 opt=$1
@@ -201,7 +218,9 @@ case $opt in
                 _launch_services
                 #echo "OpenVAS is running on https://localhost:9392"
                 ;;
-
+         "--remove")
+                _remove_all
+                ;;
         *)
         	    echo "OpenVAS9 installer shell script utility"
               _show_usage  ;;
