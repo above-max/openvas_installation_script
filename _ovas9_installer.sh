@@ -96,11 +96,13 @@ function _killing_services() {
 function _rebuild() {
   echo "-- REBUILDING NVT"
   /usr/local/sbin/openvasmd --rebuild --progress
+  /usr/local/sbin/openvasmd
+  /usr/local/sbin/openvasmd --http-only
 }
 
 function _launch_services() {
   echo "-- Manage certs"
-  openvas-manage-certs –a
+  openvas-manage-certs -a
   echo "-- LAUNCHING SERVICES"
   echo "-- Reload config for redis-server"
   redis-server /etc/redis/redis.conf
