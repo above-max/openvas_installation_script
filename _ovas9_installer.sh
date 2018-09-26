@@ -56,10 +56,10 @@ function _install_sources() {
       make
       #echo " ➜ - get version no. from openvas-$p"
       #version=`pwd | sed 's/\//\n/g' | grep "${BASE}$p" | sed "s/${BASE}$p//"`
-      echo " ➜ - openvas-$p using checkinstall"
-      checkinstall --pkgname "${BASE}$p" --maintainer "openvas_installation_script" -y
-      #make install && cd ../../
-      cd ../../
+      #echo " ➜ - openvas-$p using checkinstall"
+      #checkinstall --pkgname "${BASE}$p" --maintainer "openvas_installation_script" -y
+      echo " ➜ - run make install and cd out of openvas-$p"
+      make install && cd ../../
       echo " ✔ - $p installed"
       echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
   done
@@ -69,10 +69,10 @@ function _install_sources() {
   make
   #echo " ➜ - get version no. from openvas-$p"
   #version=`pwd | sed 's/\//\n/g' | grep "$GSA" | sed "s/$GSA//"`
-  echo " ➜ - openvas-$p using checkinstall"
-  checkinstall --pkgname "GSA" --maintainer "openvas_installation_script" -y
-  #make install && cd ../../
-  cd ../../
+  #echo " ➜ - openvas-$p using checkinstall"
+  #checkinstall --pkgname "GSA" --maintainer "openvas_installation_script" -y
+  echo " ➜ - run make install and cd out of openvas-$p"
+  make install && cd ../../
   echo " ✔ - $GSA installed"
   echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
 }
