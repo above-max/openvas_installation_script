@@ -67,10 +67,10 @@ function _install_sources() {
   mkdir source && cd source
   cmake ..
   make
-  echo " ➜ - get version no. from openvas-$p"
-  version=`pwd | sed 's/\//\n/g' | grep "$GSA" | sed "s/$GSA//"`
+  #echo " ➜ - get version no. from openvas-$p"
+  #version=`pwd | sed 's/\//\n/g' | grep "$GSA" | sed "s/$GSA//"`
   echo " ➜ - openvas-$p using checkinstall"
-  checkinstall --pkgname "GSA" --pkgversion "$version" --maintainer "openvas_installation_script" -y
+  checkinstall --pkgname "GSA" --maintainer "openvas_installation_script" -y
   #make install && cd ../../
   cd ../../
   echo " ✔ - $GSA installed"
