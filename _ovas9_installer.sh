@@ -50,18 +50,21 @@ function _install_sources() {
 
 function _start_configuration() {
   echo "-- CONFIGURATION"
-  echo "		-- configure redis-server"
+  echo "-- configure redis-server"
   
   cp /etc/redis/redis.conf /etc/redis/redis.orig
   echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
   echo "unixsocketperm 700" >> /etc/redis/redis.conf
   ln -s /var/run/redis/redis.sock /tmp/redis.sock
   service redis-server restart 
-  
-  echo "		-- manage certificates"
-  openvas-manage-certs –a
-  echo "		-- create, update and remove symbolic links"
+  _manage_certs
+  echo "-- create, update and remove symbolic links"
   ldconfig
+}
+
+function _manage_certs() {
+  echo "-- manage certificates"
+  openvas-manage-certs –a
 }
 
 function _create_user() {
@@ -77,11 +80,11 @@ function _create_user() {
 
 function _update_base() {
   echo "-- UPDATING DATA"
-  echo "		-- Run nvt sync"
+  echo "-- Run nvt sync"
   /usr/local/sbin/greenbone-nvt-sync
-  echo "		-- Run scapdata sync"
+  echo "-- Run scapdata sync"
   /usr/local/sbin/greenbone-scapdata-sync
-  echo "		-- Run certdata sync"
+  echo "-- Run certdata sync"
   /usr/local/sbin/greenbone-certdata-sync
 }
 
@@ -98,19 +101,21 @@ function _killing_services() {
 function _rebuild() {
   echo "-- REBUILDING NVT"
   /usr/local/sbin/openvasmd --rebuild --progress
+  
+  _manage_certs
 }
 
 function _launch_services() {
   echo "-- LAUNCHING SERVICES"
-  echo "		-- Reload config for redis-server"
+  echo "-- Reload config for redis-server"
   redis-server /etc/redis/redis.conf
-  echo "		-- Start redis-server"
+  echo "-- Start redis-server"
   /etc/init.d/redis-server start
-  echo "		-- Start openvasmd"
+  echo "-- Start openvasmd"
   /usr/local/sbin/openvasmd
-  echo "		-- Start openvassd"
+  echo "-- Start openvassd"
   /usr/local/sbin/openvassd
-  echo "		-- Start gsad"
+  echo "-- Start gsad"
   /usr/local/sbin/gsad
 }
 
