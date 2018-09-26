@@ -58,7 +58,7 @@ function _install_sources() {
       echo " ➜ - get version no. from openvas-$p"
       version=`pwd | sed 's/\//\n/g' | grep "${BASE}$p" | sed "s/${BASE}$p//"`
       echo " ➜ - openvas-$p using checkinstall"
-      checkinstall --pkgname "${BASE}$p" --maintainer "openvas_installation_script" -y
+      checkinstall --pkgname "${BASE}$p$version" --version "$version" --maintainer "openvas_installation_script" -y
       #echo " ➜ - run make install and cd out of openvas-$p"
       #make install && cd ../../
       cd ../../
@@ -72,7 +72,7 @@ function _install_sources() {
   echo " ➜ - get version no. from openvas-$p"
   version=`pwd | sed 's/\//\n/g' | grep "$GSA" | sed "s/$GSA//"`
   echo " ➜ - openvas-$p using checkinstall"
-  checkinstall --pkgname "GSA" --maintainer "openvas_installation_script" -y
+  checkinstall --pkgname "GSA$version" --version "$version" --maintainer "openvas_installation_script" -y
   #echo " ➜ - run make install and cd out of openvas-$p"
   #make install && cd ../../
   cd ../../
@@ -83,17 +83,17 @@ function _install_sources() {
 function _remove_all() {
     echo " "
     echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REMOVING PACKAGES -- ☰☰☰☰☰☰☰☰☰☰"
-    dpkg -r "openvas-smb-"
+    dpkg -r "openvas-smb-${HINT}"
     echo " ✔ - openvas-smb removed"
     dpkg -r "openvas-libraries"
     echo " ✔ - libraries removed"
-    dpkg -r "openvas-scanner-"
+    dpkg -r "openvas-scanner-${HINT}"
     echo " ✔ - openvas-scanner removed"
-    dpkg -r "openvas-manager-"
+    dpkg -r "openvas-manager-${HINT}"
     echo " ✔ - openvas-manager removed"
-    dpkg -r "openvas-cli-"
+    dpkg -r "openvas-cli-${HINT}"
     echo " ✔ - openvas-cli removed"
-    dpkg -r "greenbone-security-assistant-"
+    dpkg -r "greenbone-security-assistant-${HINT}"
     echo " ✔ - greenbone-security-assistant removed"
 }
 
