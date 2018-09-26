@@ -47,8 +47,9 @@ function _install_sources() {
       cd ${DIR}/${BASE}$p${HINT}/
       echo " ➜ - create source folder"
       mkdir source && cd source
-      cmake ..
       echo " ➜ - run cmake"
+      cmake ..
+      echo " ➜ - run make"
       make
       echo " ➜ - run make install and cd out from openvas-$p"
       make install && cd ../../
