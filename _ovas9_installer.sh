@@ -54,6 +54,7 @@ function _start_configuration() {
   cp /etc/redis/redis.conf /etc/redis/redis.orig
   echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
   echo "unixsocketperm 700" >> /etc/redis/redis.conf
+  ln -s /var/run/redis/redis.sock /tmp/redis.sock
   #service redis-server restart
   echo "		-- manage certificates"
   openvas-manage-certs –a
