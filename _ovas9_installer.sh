@@ -29,7 +29,7 @@ function _get_sources() {
 }
 
 function _install_sources() {
-  echo "-- BUILDING SOURCES"
+  echo "↪ -- BUILDING SOURCES"
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
   do
@@ -38,7 +38,7 @@ function _install_sources() {
       cmake ..
       make
       make install && cd ../../
-      echo "( OK ) - $p installed"
+      echo "✔ - $p installed"
   done
   cd ${DIR}/$GSA${HINT}/
   mkdir source && cd source
@@ -49,59 +49,65 @@ function _install_sources() {
 }
 
 function _start_configuration() {
-  echo "-- CONFIGURATION"
+  echo "↪ -- CONFIGURATION"
   echo "-- configure redis-server"
   
   cp /etc/redis/redis.conf /etc/redis/redis.orig
+  echo "✔ - redis.conf backup complete"
   echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
+  echo "✔ - redis set to use unixsocket"
   echo "unixsocketperm 700" >> /etc/redis/redis.conf
+  echo "✔ - permissions for unixsocket set"
   ln -s /var/run/redis/redis.sock /tmp/redis.sock
   service redis-server restart
   openvas-manage-certs -a
-  echo "-- create, update and remove symbolic links"
+  echo "✔ - certificates ready"
   ldconfig
+  echo "✔ - ldconfig done"
 }
 
 function _create_user() {
-  echo "-- CREATE USER"
-  echo "Whats the name of the new user? "
+  echo "↪ -- CREATE USER"
+  echo "↪ Whats the name of the new user? "
   read name
   openvasmd --create-user=$name --role=Admin
-  echo "Set new password for $name: "
+  echo "↪ Set new password for $name: "
   read pw
   openvasmd --user=$name --new-password=$pw
   
 }
 
 function _update_base() {
-  echo "-- UPDATING DATA"
-  echo "-- Run nvt sync"
+  echo "↪ -- UPDATING DATA"
   /usr/local/sbin/greenbone-nvt-sync
-  echo "-- Run scapdata sync"
+  echo "✔ - nvt sync done"
   /usr/local/sbin/greenbone-scapdata-sync
-  echo "-- Run certdata sync"
+  echo "✔ - scapdata sync done"
   /usr/local/sbin/greenbone-certdata-sync
+  echo "✔ - certdata sync done"
 }
 
 function _killing_services() {
-  echo "-- KILLING PROCESSES"
-  echo "		-- openvas"
-  echo "		-- gsad"
-  echo "		-- redis"
+  echo "↪ -- KILLING PROCESSES"
+  echo "✔ openvas killed"
+  echo "✔ gsad killed"
+  echo "✔ redis killed"
   ps aux | egrep "(openvas|gsad|redis-server)" | awk '{print $2}' | xargs -i kill -9 '{}'
   service redis-server stop
   
 }
 
 function _rebuild() {
-  echo "-- REBUILDING NVT"
+  echo " ↪ -- REBUILDING NVT"
   /usr/local/sbin/openvasmd --rebuild --progress
   /usr/local/sbin/openvasmd
+  echo "✔ start openvasmd"
   /usr/local/sbin/openvasmd --http-only
+  echo "✔ - set --http-only"
 }
 
 function _launch_services() {
-  echo "-- LAUNCHING SERVICES"
+  echo "↪ -- LAUNCHING SERVICES"
   echo "-- Reload config for redis-server"
   redis-server /etc/redis/redis.conf
   echo "-- Start redis-server"
