@@ -57,14 +57,9 @@ function _start_configuration() {
   echo "unixsocketperm 700" >> /etc/redis/redis.conf
   ln -s /var/run/redis/redis.sock /tmp/redis.sock
   service redis-server restart 
-  _manage_certs
+  openvas-manage-certs –a
   echo "-- create, update and remove symbolic links"
   ldconfig
-}
-
-function _manage_certs() {
-  echo "-- manage certificates"
-  openvas-manage-certs –a
 }
 
 function _create_user() {
@@ -101,11 +96,11 @@ function _killing_services() {
 function _rebuild() {
   echo "-- REBUILDING NVT"
   /usr/local/sbin/openvasmd --rebuild --progress
-  
-  _manage_certs
 }
 
 function _launch_services() {
+  echo "-- Manage certs"
+  openvas-manage-certs –a
   echo "-- LAUNCHING SERVICES"
   echo "-- Reload config for redis-server"
   redis-server /etc/redis/redis.conf
