@@ -18,4 +18,5 @@ script has been tested on Ubuntu 16.04.x and Ubuntu Server 16.04.x
   * --configure: change config of redis-server to use unixsocket
   * --create-usr
   * --update: update nvt's and data
-  * 
+  * --start
+  * --rebuild
