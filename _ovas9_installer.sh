@@ -140,8 +140,9 @@ function _update_base() {
 function _killing_services() {
   echo " "
   echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- KILLING PROCESSES -- ☰☰☰☰☰☰☰☰☰☰ "
-  ps aux | egrep "(openvas|gsad|redis-server)" | awk '{print $2}' | xargs -i kill -9 '{}'
-  echo " ✔ openvas killed"
+  whoami | ps-u $1 | grep gsad | awk '{print $2}' | xargs -i kill -9 '{}'
+  #ps aux | egrep "(openvas|gsad)" | awk '{print $2}' | xargs -i kill -9 '{}'
+  #echo " ✔ openvas killed"
   echo " ✔ gsad killed"
   service redis-server stop
   echo " ✔ redis killed"
