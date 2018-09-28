@@ -9,159 +9,163 @@ declare -a _package_list=("-smb-" "-libraries-" "-scanner-" "-manager-" "-cli-")
 
 function _install_prerequisites() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- DOWNLOADING DEPENDENCIES -- ☰☰☰☰☰☰☰☰☰☰"
+  echo " ---------- DOWNLOADING DEPENDENCIES ---------- "
   apt install -y build-essential cmake gcc-mingw-w64 libgnutls28-dev perl-base heimdal-dev libpopt-dev libglib2.0-dev python-setuptools python-polib checkinstall libssh-dev libpcap-dev libxslt1-dev libgpgme11-dev uuid-dev bison libksba-dev libhiredis-dev libsnmp-dev libgcrypt20-dev libldap2-dev  libfreeradius-client-dev doxygen xmltoman sqlfairy sqlite3 redis-server gnutls-bin libsqlite3-dev texlive texlive-lang-german texlive-lang-english texlive-latex-recommended texlive-latex-extra libmicrohttpd-dev libxml2-dev libxslt1.1 xsltproc flex clang nmap rpm nsis alien
 }
 
 function _get_sources() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- DOWNLOADING SOURCES -- ☰☰☰☰☰☰☰☰☰☰"
+  echo " ---------- DOWNLOADING SOURCES ----------"
   wget http://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz ${NOCERT}
-  echo " ✔ - openvas-libraries-9.9.1 downloaded "
+  echo " _> openvas-libraries-9.9.1 downloaded "
   wget http://wald.intevation.org/frs/download.php/2423/openvas-scanner-5.1.1.tar.gz ${NOCERT}
-  echo " ✔ - openvas-scanner-5.1.1 downloaded "
+  echo " _> openvas-scanner-5.1.1 downloaded "
   wget http://wald.intevation.org/frs/download.php/2426/openvas-manager-7.0.2.tar.gz ${NOCERT}
-  echo " ✔ - openvas-manager-7.0.2 downloaded "
+  echo " _> openvas-manager-7.0.2 downloaded "
   wget http://wald.intevation.org/frs/download.php/2429/greenbone-security-assistant-7.0.2.tar.gz ${NOCERT}
-  echo " ✔ - greenbone-security-assistent-7.0.2 downloaded "
+  echo " _> greenbone-security-assistent-7.0.2 downloaded "
   wget http://wald.intevation.org/frs/download.php/2397/openvas-cli-1.4.5.tar.gz ${NOCERT}
-  echo " ✔ - openvas-cli-1.4.5 downloaded "
+  echo " _> openvas-cli-1.4.5 downloaded "
   wget https://github.com/greenbone/openvas-smb/archive/v1.0.4.tar.gz ${NOCERT}
   # use openvas-smb-1.0.4 for compatability. Other version will lead to errors during install becauseof undefined reference to `gnutls_certificate_type_set_priority`
-  echo " ✔ - openvas-smb-1.0.4 downloaded "
+  echo " _> openvas-smb-1.0.4 downloaded "
   #wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
   #wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
   wget https://svn.wald.intevation.org/svn/openvas/branches/tools-attic/openvas-check-setup ${NOCERT}
-  echo " ✔ - openvas-check-setup script downloaded "
+  echo " _> openvas-check-setup script downloaded "
   find . -name \*.gz -exec tar zxvfp {} \;
-  echo " ✔ - downloaded files unpacked and folders created"
+  echo " _> downloaded files unpacked and folders created"
   chmod +x openvas-check-setup
-  echo " ✔ - openvas_check_setup is now executable"
+  echo " _> openvas_check_setup is now executable"
   rm *.tar.gz
-  echo " ✔ - *.tar.gz files removed"
+  echo " _> *.tar.gz files removed"
+  echo " "
 }
 
 function _install_sources() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- BUILDING SOURCES -- ☰☰☰☰☰☰☰☰☰☰"
+  echo " ---------- BUILDING SOURCES ---------- "
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
   do
-      echo " ➜ - cd into openvas-$p"
+      echo " _> cd into openvas-$p"
       cd ${DIR}/${BASE}$p${HINT}/
-      echo " ➜ - create source folder"
+      echo " _> create source folder"
       mkdir source && cd source
-      echo " ➜ - run cmake"
+      echo " _> run cmake"
       cmake ..
-      echo " ➜ - run make"
+      echo " _> run make"
       make
-      echo " ➜ - run make install and cd out of openvas-$p"
+      echo " _> run make install and cd out of openvas-$p"
       make install && cd ../../
-      echo " ✔ - $p installed"
-      echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
+      echo " _> $p installed"
+      echo " "
   done
   cd ${DIR}/$GSA${HINT}/
   mkdir source && cd source
   cmake ..
   make
-  echo " ➜ - run make install and cd out of openvas-$p"
+  echo " _> run make install and cd out of openvas-$p"
   make install && cd ../../
   #cd ../../
-  echo " ✔ - $GSA installed"
-  echo " ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ "
+  echo " _> $GSA installed"
+  echo " "
 }
 
 function _remove_all() {
     echo " "
-    echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REMOVING PACKAGES -- ☰☰☰☰☰☰☰☰☰☰"
+    echo " ---------- REMOVING PACKAGES ---------- "
     dpkg -r "openvas-smb-${HINT}"
-    echo " ✔ - openvas-smb removed"
+    echo " _> openvas-smb removed"
     dpkg -r "openvas-libraries"
-    echo " ✔ - libraries removed"
+    echo " _> libraries removed"
     dpkg -r "openvas-scanner-${HINT}"
-    echo " ✔ - openvas-scanner removed"
+    echo " _> openvas-scanner removed"
     dpkg -r "openvas-manager-${HINT}"
-    echo " ✔ - openvas-manager removed"
+    echo " _> openvas-manager removed"
     dpkg -r "openvas-cli-${HINT}"
-    echo " ✔ - openvas-cli removed"
+    echo " _> openvas-cli removed"
     dpkg -r "greenbone-security-assistant-${HINT}"
-    echo " ✔ - greenbone-security-assistant removed"
+    echo " _> greenbone-security-assistant removed"
+    echo " "
 }
 
 function _start_configuration() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- CONFIGURATION -- ☰☰☰☰☰☰☰☰☰☰"
+  echo " ---------- CONFIGURATION ---------- "
   cp /etc/redis/redis.conf /etc/redis/redis.orig
-  echo " ✔ - redis.conf backup complete"
+  echo " _> redis.conf backup complete"
   echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
-  echo " ✔ - redis set to use unixsocket"
+  echo " _> redis set to use unixsocket"
   echo "unixsocketperm 700" >> /etc/redis/redis.conf
-  echo " ✔ - permissions for unixsocket set"
-  ln -s /var/run/redis/redis.sock /tmp/redis.sock
+  echo " _> permissions for unixsocket set"
   service redis-server restart
   openvas-manage-certs -a
-  echo " ✔ - certificates ready"
+  echo " _> certificates ready"
   ldconfig
-  echo " ✔ - ldconfig done"
+  echo " _> ldconfig done"
+  echo " "
 }
 
 function _create_user() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- CREATE USER -- ☰☰☰☰☰☰☰☰☰☰ "
-  echo " ↪ Whats the name of the new user? "
+  echo " ---------- CREATE USER ---------- "
+  echo " _> Whats the name of the new user? "
   read name
   openvasmd --create-user=$name --role=Admin
-  echo "↪ Set new password for $name: "
+  echo " _> Set new password for $name: "
   read pw
   openvasmd --user=$name --new-password=$pw
-  
+  echo " "
 }
 
 function _update_base() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- UPDATING DATA -- ☰☰☰☰☰☰☰☰☰☰ "
+  echo " ---------- UPDATING DATA ---------- "
   /usr/local/sbin/greenbone-nvt-sync
-  echo " ✔ - nvt sync done"
+  echo " _> - nvt sync done"
   /usr/local/sbin/greenbone-scapdata-sync
-  echo " ✔ - scapdata sync done"
+  echo " _> - scapdata sync done"
   /usr/local/sbin/greenbone-certdata-sync
-  echo " ✔ - certdata sync done"
+  echo " _> - certdata sync done"
+  echo " "
 }
 
 function _killing_services() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- KILLING PROCESSES -- ☰☰☰☰☰☰☰☰☰☰ "
+  echo " ---------- KILLING PROCESSES ---------- "
   whoami | ps-u $1 | grep gsad | awk '{print $2}' | xargs -i kill -9 '{}'
-  #ps aux | egrep "(openvas|gsad)" | awk '{print $2}' | xargs -i kill -9 '{}'
-  #echo " ✔ openvas killed"
-  echo " ✔ gsad killed"
+  echo " _> gsad killed"
   service redis-server stop
-  echo " ✔ redis killed"
+  echo " _> redis killed"
+  echo " "
 }
 
 function _rebuild() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- REBUILDING NVT -- ☰☰☰☰☰☰☰☰☰☰"
+  echo " ---------- REBUILDING NVT ---------- "
   /usr/local/sbin/openvasmd --rebuild --progress
   #/usr/local/sbin/openvasmd
-  #echo " ✔ start openvasmd"
+  #echo " _> start openvasmd"
   /usr/local/sbin/gsad --http-only
-  echo " ✔ - set --http-only"
+  echo " _> - set --http-only"
+  echo " "
 }
 
 function _launch_services() {
   echo " "
-  echo " ↪ ☰☰☰☰☰☰☰☰☰☰ -- LAUNCHING SERVICES -- ☰☰☰☰☰☰☰☰☰☰"
+  echo " ---------- LAUNCHING SERVICES ---------- "
   redis-server /etc/redis/redis.conf
-  echo " ✔ - config for redis-server reloaded"
+  echo " _> config for redis-server reloaded"
   /etc/init.d/redis-server start
-  echo " ✔ - redis-server started"
+  echo " _> redis-server started"
   /usr/local/sbin/openvasmd
-  echo " ✔ - openvasmd started"
+  echo " _> openvasmd started"
   /usr/local/sbin/openvassd
-  echo " ✔ - openvassd started"
+  echo " _> openvassd started"
   /usr/local/sbin/gsad
-  echo " ✔ - gsad started"
+  echo " _> gsad started"
+  echo " "
 }
 
 function _show_usage() {
