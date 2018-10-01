@@ -4,18 +4,22 @@ BASE=openvas
 NOCERT="--no-check-certificate"
 GSA="greenbone-security-assistant-"
 HINT="*"
+gg
+RED='\033[0;31m'
+GRE='\033[0;32m'
+NOC='\033[0m'
 
 declare -a _package_list=("-smb-" "-libraries-" "-scanner-" "-manager-" "-cli-")
 
 function _install_prerequisites() {
   echo " "
-  echo " ---------- DOWNLOADING DEPENDENCIES ---------- "
+  echo -e " ${GRE} ---------- DOWNLOADING DEPENDENCIES ---------- ${NOC} "
   apt install -y build-essential cmake gcc-mingw-w64 libgnutls28-dev perl-base heimdal-dev libpopt-dev libglib2.0-dev python-setuptools python-polib checkinstall libssh-dev libpcap-dev libxslt1-dev libgpgme11-dev uuid-dev bison libksba-dev libhiredis-dev libsnmp-dev libgcrypt20-dev libldap2-dev  libfreeradius-client-dev doxygen xmltoman sqlfairy sqlite3 redis-server gnutls-bin libsqlite3-dev texlive texlive-lang-german texlive-lang-english texlive-latex-recommended texlive-latex-extra libmicrohttpd-dev libxml2-dev libxslt1.1 xsltproc flex clang nmap rpm nsis alien
 }
 
 function _get_sources() {
   echo " "
-  echo " ---------- DOWNLOADING SOURCES ----------"
+  echo -e " ${GRE} ---------- DOWNLOADING SOURCES ---------- ${NOC} "
   wget http://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz ${NOCERT}
   echo " _> openvas-libraries-9.9.1 downloaded "
   wget http://wald.intevation.org/frs/download.php/2423/openvas-scanner-5.1.1.tar.gz ${NOCERT}
@@ -44,7 +48,7 @@ function _get_sources() {
 
 function _install_sources() {
   echo " "
-  echo " ---------- BUILDING SOURCES ---------- "
+  echo -e " ${GRE} ---------- BUILDING SOURCES ---------- ${NOC} "
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
   for p in "${_package_list[@]}"
   do
@@ -74,7 +78,7 @@ function _install_sources() {
 
 function _remove_all() {
     echo " "
-    echo " ---------- REMOVING PACKAGES ---------- "
+    echo -e " ${GRE} ---------- REMOVING PACKAGES ---------- ${NOC}  "
     dpkg -r "openvas-smb-${HINT}"
     echo " _> openvas-smb removed"
     dpkg -r "openvas-libraries"
@@ -92,7 +96,7 @@ function _remove_all() {
 
 function _start_configuration() {
   echo " "
-  echo " ---------- CONFIGURATION ---------- "
+  echo -e " ${GRE} ---------- CONFIGURATION ---------- ${NOC} "
   cp /etc/redis/redis.conf /etc/redis/redis.orig
   echo " _> redis.conf backup complete"
   #echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
@@ -111,7 +115,7 @@ function _start_configuration() {
 
 function _create_user() {
   echo " "
-  echo " ---------- CREATE USER ---------- "
+  echo -e " ${GRE} ---------- CREATE USER ---------- ${NOC} "
   echo " _> Whats the name of the new user? "
   read name
   openvasmd --create-user=$name --role=Admin
@@ -123,7 +127,7 @@ function _create_user() {
 
 function _update_base() {
   echo " "
-  echo " ---------- UPDATING DATA ---------- "
+  echo -e " ${GRE} ---------- UPDATING DATA ---------- ${NOC} "
   /usr/local/sbin/greenbone-nvt-sync
   echo " _> - nvt sync done"
   /usr/local/sbin/greenbone-scapdata-sync
@@ -135,7 +139,7 @@ function _update_base() {
 
 function _killing_services() {
   echo " "
-  echo " ---------- KILLING PROCESSES ---------- "
+  echo -e " ${GRE} ---------- KILLING PROCESSES ---------- ${NOC} "
   whoami | ps -u $1 | egrep "(openvassd|openvasmd|gsad)" | awk '{print $2}' | xargs -i kill -9 '{}'
   echo " _> openvassd killed"
   echo " _> openvasmd killed"
@@ -147,7 +151,7 @@ function _killing_services() {
 
 function _rebuild() {
   echo " "
-  echo " ---------- REBUILDING NVT ---------- "
+  echo -e " ${GRE} ---------- REBUILDING NVT ---------- ${NOC} "
   /usr/local/sbin/openvasmd --rebuild --progress
   #/usr/local/sbin/openvasmd
   #echo " _> start openvasmd"
@@ -158,7 +162,7 @@ function _rebuild() {
 
 function _launch_services() {
   echo " "
-  echo " ---------- LAUNCHING SERVICES ---------- "
+  echo -e " ${GRE} ---------- LAUNCHING SERVICES ---------- ${NOC} "
   redis-server /etc/redis/redis.conf
   echo " _> config for redis-server reloaded"
   /etc/init.d/redis-server start
