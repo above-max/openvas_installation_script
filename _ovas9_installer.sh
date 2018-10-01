@@ -136,7 +136,9 @@ function _update_base() {
 function _killing_services() {
   echo " "
   echo " ---------- KILLING PROCESSES ---------- "
-  whoami | ps-u $1 | grep gsad | awk '{print $2}' | xargs -i kill -9 '{}'
+  whoami | ps -u $1 | egrep "(openvassd|openvasmd|gsad)" | awk '{print $2}' | xargs -i kill -9 '{}'
+  echo " _> openvassd killed"
+  echo " _> openvasmd killed"
   echo " _> gsad killed"
   service redis-server stop
   echo " _> redis killed"
