@@ -4,7 +4,6 @@ BASE=openvas
 NOCERT="--no-check-certificate"
 GSA="greenbone-security-assistant-"
 HINT="*"
-gg
 RED='\033[0;31m'
 GRE='\033[0;32m'
 NOC='\033[0m'
