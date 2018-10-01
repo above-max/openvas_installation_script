@@ -187,8 +187,8 @@ function _show_usage() {
                 echo "	--create-usr  : Create new user for OpenVAS WEBUI" 
                 echo "	--update  : Run sync for nvt, scapdata and certdata"
                 echo "	--kill-services  : Shutdown running services before launching OpenVAS9"
-                echo "	--rebuild  : Rebuild NVT's and cache"
                 echo "	--start  : Launch OpenVAS9"
+                echo "	--rebuild  : Rebuild NVT's and cache"
                 #echo "	--remove  : Remove all packages"                
 }
 
