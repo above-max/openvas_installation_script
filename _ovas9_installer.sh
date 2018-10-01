@@ -95,9 +95,11 @@ function _start_configuration() {
   echo " ---------- CONFIGURATION ---------- "
   cp /etc/redis/redis.conf /etc/redis/redis.orig
   echo " _> redis.conf backup complete"
-  echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
+  #echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
+  sed -i -- 's/# unixsocket /var/run/redis/redis.sock/unixsocket unixsocket /tmp/redis.sock/g' /etc/redis/redis.conf
   echo " _> redis set to use unixsocket"
-  echo "unixsocketperm 700" >> /etc/redis/redis.conf
+  sed -i -- 's/# unixsocketperm 700/unixsocketperm 700/g' /etc/redis/redis.conf
+  #echo "unixsocketperm 700" >> /etc/redis/redis.conf
   echo " _> permissions for unixsocket set"
   service redis-server restart
   openvas-manage-certs -a
