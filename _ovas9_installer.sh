@@ -41,7 +41,7 @@ function _get_sources() {
   chmod +x openvas-check-setup
   echo " _> openvas_check_setup is now executable"
   rm *.tar.gz
-  echo " _> *.tar.gz files removed"
+  echo " _> *.tar.gz files removed" 
   echo " "
 }
 
@@ -139,7 +139,7 @@ function _update_base() {
 function _killing_services() {
   echo " "
   echo -e " ${GRE} ---------- KILLING PROCESSES ---------- ${NOC} "
-  whoami | ps -u $1 | egrep "(openvassd|openvasmd|gsad)" | awk '{print $2}' | xargs -i kill -9 '{}'
+  ps aux | egrep "(openvas|gsad)" | awk '{print $2}' | xargs -i kill -9 '{}'
   echo " _> openvassd killed"
   echo " _> openvasmd killed"
   echo " _> gsad killed"
