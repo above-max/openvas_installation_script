@@ -4,7 +4,7 @@ simple installer script for OpenVAS9
 
 ## Compatibility
 
-script has been tested on Ubuntu 16.04.x and Ubuntu Server 16.04.5
+script has been tested on Ubuntu Server 16.04.5
 
 ## How-to
 
