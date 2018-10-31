@@ -81,7 +81,7 @@ echo " "
 echo -e " ${GRE} ---------- CONFIGURATION ---------- ${NOC} "
 cp /etc/redis/redis.conf /etc/redis/redis.orig
 echo " _> redis.conf backup complete"
-echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
+#echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
 sed -i -- 's:# unixsocket /var/run/redis/redis.sock:unixsocket /tmp/redis.sock:g' /etc/redis/redis.conf
 echo " [*] redis set to use unixsocket"
 sed -i -- 's/# unixsocketperm 700/unixsocketperm 700/g' /etc/redis/redis.conf
@@ -118,6 +118,7 @@ echo " "
 
 echo " "
 echo -e " \${GRE} ---------- LAUNCHING SCANNER ---------- \${NOC} "
+service redis-server restart
 sleep 30
 sudo ldconfig
 sudo /usr/local/sbin/openvassd
