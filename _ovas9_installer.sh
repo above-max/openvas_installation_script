@@ -50,17 +50,17 @@ echo -e " ${GRE} ---------- BUILDING SOURCES ---------- ${NOC} "
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
 for p in "${_package_list[@]}"
 do
-    echo " _> cd into openvas-$p"
+    echo " [*] cd into openvas-$p"
     cd ${DIR}/${BASE}$p${HINT}/
-    echo " _> create source folder"
+    echo " [*] create source folder"
     mkdir source && cd source
-    echo " _> run cmake"
+    echo " [*] run cmake"
     cmake ..
-    echo " _> run make"
+    echo " [*] run make"
     make
-    echo " _> run make install and cd out of openvas-$p"
+    echo " [*] run make install and cd out of openvas-$p"
     make install && cd ../../
-    echo " _> $p installed"
+    echo " [*] $p installed"
     echo " "
     sleep 5
 done
@@ -69,45 +69,33 @@ cd ${DIR}/$GSA${HINT}/
 mkdir source && cd source
 cmake ..
 make
-echo " _> run make install and cd out of openvas-$p"
+echo " [*] run make install and cd out of openvas-$p"
 make install && cd ../../
 #cd ../../
-echo " _> $GSA installed"
+echo " [*] $GSA installed"
 echo " "
 
 sleep 20
 
 echo " "
 echo -e " ${GRE} ---------- CONFIGURATION ---------- ${NOC} "
-#cp /etc/redis/redis.conf /etc/redis/redis.orig
-#echo " _> redis.conf backup complete"
-#echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
+cp /etc/redis/redis.conf /etc/redis/redis.orig
+echo " _> redis.conf backup complete"
+echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
 sed -i -- 's:# unixsocket /var/run/redis/redis.sock:unixsocket /tmp/redis.sock:g' /etc/redis/redis.conf
-echo " _> redis set to use unixsocket"
+echo " [*] redis set to use unixsocket"
 sed -i -- 's/# unixsocketperm 700/unixsocketperm 700/g' /etc/redis/redis.conf
 #echo "unixsocketperm 700" >> /etc/redis/redis.conf
-echo " _> permissions for unixsocket set"
+echo " [*] permissions for unixsocket set"
 ln -fs /var/run/redis/redis.sock /tmp/redis.sock
 service redis-server restart
 openvas-manage-certs -a
-echo " _> certificates ready"
+echo " [*] certificates ready"
 ldconfig
-echo " _> ldconfig done"
+echo " [*] ldconfig done"
 echo " "
 
-
-function _create_user() {
-  echo " "
-  echo -e " ${GRE} ---------- CREATE USER ---------- ${NOC} "
-  echo " _> Whats the name of the new user? "
-  read name
-  openvasmd --create-user=$name --role=Admin
-  echo " _> Set new password for $name: "
-  read pw
-  openvasmd --user=$name --new-password=$pw
-  echo " "
-}
-
+sleep 5
 
 echo " "
 echo -e " ${GRE} ---------- UPDATING DATA ---------- ${NOC} "
@@ -118,38 +106,23 @@ sleep 5
 [ ! -f /usr/local/lib/libopenvas_omp.so.9 ] && sudo ln -fs /usr/local/lib/libopenvas_omp.so.9.0.1 /usr/local/lib/libopenvas_omp.so.9
 [ ! -f /usr/local/lib/libopenvas_nasl.so.9 ] && sudo ln -fs /usr/local/lib/libopenvas_nasl.so.9.0.1 /usr/local/lib/libopenvas_nasl.so.9
 
-echo " _> - nvt sync done"
+echo " [*] nvt sync done"
 /usr/local/sbin/greenbone-scapdata-sync
 sleep 5
-echo " _> - scapdata sync done"
+echo " [*] scapdata sync done"
 ldconfig
 /usr/local/sbin/greenbone-certdata-sync
 sleep 5
-echo " _> - certdata sync done"
+echo " [*] certdata sync done"
 echo " "
 
-
-#function _killing_services() {
-#  echo " "
-#  echo -e " ${GRE} ---------- KILLING PROCESSES ---------- ${NOC} "
-#  ps aux | egrep "(openvas|gsad)" | awk '{print $2}' | xargs kill -9
-#  echo " _> openvassd killed"
-#  echo " _> openvasmd killed"
-#  echo " _> gsad killed"
-#  service redis-server stop
-#  echo " _> redis killed"
-#  echo " "
-#}
-
-#scanner
 echo " "
 echo -e " \${GRE} ---------- LAUNCHING SCANNER ---------- \${NOC} "
 sleep 30
 sudo ldconfig
 sudo /usr/local/sbin/openvassd
-echo " _> openvassd started"
+echo " [*] openvassd started"
 
-# _manager
 echo " "
 echo -e " \${GRE} ---------- REBUILDING NVT ---------- \${NOC} "
 sleep 20
@@ -160,93 +133,26 @@ echo -e " \${GRE} ---------- LAUNCHING MANAGER ---------- \${NOC} "
 sudo ldconfig
 sudo /usr/local/sbin/openvasmd
 
-# _ui
 echo " "
 echo -e " \${GRE} ---------- LAUNCHING UI ---------- \${NOC} "
 sleep 30
 sudo ldconfig
 sudo /usr/local/sbin/gsad --http-only
-echo " _> gsad started with --http-only"
+echo " [*] gsad started with --http-only"
 echo " "
 
-#function _rebuild() {
-#  echo " "
-#  echo -e " ${GRE} ---------- REBUILDING NVT ---------- ${NOC} "
-#  /usr/local/sbin/openvasmd --rebuild --progress
-#  #/usr/local/sbin/openvasmd
-#  #echo " _> start openvasmd"
-#  /usr/local/sbin/gsad --http-only
-#  echo " _> - set --http-only"
-#  echo " "
-#}
 
-#function _launch_services() {
- # echo " "
- # echo -e " ${GRE} ---------- LAUNCHING SERVICES ---------- ${NOC} "
- # redis-server /etc/redis/redis.conf
- # echo " _> config for redis-server reloaded"
- # /etc/init.d/redis-server start
- # echo " _> redis-server started"
- # /usr/local/sbin/openvasmd
- # echo " _> openvasmd started"
- # /usr/local/sbin/openvassd
- # echo " _> openvassd started"
- # /usr/local/sbin/gsad
- # echo " _> gsad started"
- # echo " "
-#}
-
-#function _show_usage() {
-#  echo " "
-#  echo "Usage: $0 OPTION"
-#                echo "Available OPTIONS:"
-#                echo "	--install-pre  : Download needed Ubuntu 16.04 packages"
-#                echo "	--get-src  : Download needed source files/ folders for OpenVAS"
-#                echo "	--install-src  : Build source files/ folders for OpenVAS"
-#                echo "	--configure  : Create certificates and prepare redis-server"
-#                echo "	--create-usr  : Create new user for OpenVAS WEBUI" 
-#                echo "	--update  : Run sync for nvt, scapdata and certdata"
-#                echo "	--kill-services  : Shutdown running services before launching OpenVAS9"
-#                echo "	--start  : Launch OpenVAS9"
-#                echo "	--rebuild  : Rebuild NVT's and cache"
-#                #echo "	--remove  : Remove all packages"                
-#}
-
-#opt=$1
-#case $opt in
-#        "--install-pre")
-#                _install_prerequisites
-#                ;;
-#        "--get-src")
-#                _get_sources
-#                ;;
-#        "--install-src")
-#                _install_sources
-#                ;;
-#        "--configure")
-#                _start_configuration
-#                ;;
-#        "--create-usr")
-#                _create_user
-#                ;;
-#        "--update")
-#                _update_base
-#                ;;
-#         "--kill-services")
-#                _killing_services
-#                ;;
-#         "--rebuild")
-#                _rebuild
-#                ;;
-#         "--start")
-#                _launch_services
-#                #echo "OpenVAS is running on https://localhost:9392"
-#                ;;
-#         "--remove")
-#                _remove_all
-#                ;;
-#        *)
-#        	    echo "OpenVAS9 installer shell script utility"
-#              _show_usage  ;;
-#esac
-#
+echo "OpenVAS ready for use!"
+echo " "
+echo "Next Step: Create a user"
+echo "\${GRE} [*] Whats the name of the new user? \${NOC}"
+read name
+openvasmd --create-user=$name --role=Admin
+echo " [*] New user with role \'Admin\' created "
+echo " "
+echo "\${GRE} [*] Set new password for $name: \${NOC}"
+read pw
+openvasmd --user=$name --new-password=$pw
+echo " [*] New user created "
+echo " "
+echo "[----------]  HAPPY SCANNING  [----------]"
