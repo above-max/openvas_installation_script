@@ -19,28 +19,28 @@ sleep 10
 echo " "
 echo -e " ${GRE} ---------- DOWNLOADING SOURCES ---------- ${NOC} "
 wget http://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz ${NOCERT}
-echo " _> openvas-libraries-9.9.1 downloaded "
+echo " [*] openvas-libraries-9.9.1 downloaded "
 wget http://wald.intevation.org/frs/download.php/2423/openvas-scanner-5.1.1.tar.gz ${NOCERT}
-echo " _> openvas-scanner-5.1.1 downloaded "
+echo " [*] openvas-scanner-5.1.1 downloaded "
 wget http://wald.intevation.org/frs/download.php/2426/openvas-manager-7.0.2.tar.gz ${NOCERT}
-echo " _> openvas-manager-7.0.2 downloaded "
+echo " [*] openvas-manager-7.0.2 downloaded "
 wget http://wald.intevation.org/frs/download.php/2429/greenbone-security-assistant-7.0.2.tar.gz ${NOCERT}
-echo " _> greenbone-security-assistent-7.0.2 downloaded "
+echo " [*] greenbone-security-assistent-7.0.2 downloaded "
 wget http://wald.intevation.org/frs/download.php/2397/openvas-cli-1.4.5.tar.gz ${NOCERT}
-echo " _> openvas-cli-1.4.5 downloaded "
+echo " [*] openvas-cli-1.4.5 downloaded "
 wget https://github.com/greenbone/openvas-smb/archive/v1.0.4.tar.gz ${NOCERT}
 # use openvas-smb-1.0.4 for compatability. Other version will lead to errors during install becauseof undefined reference to `gnutls_certificate_type_set_priority`
-echo " _> openvas-smb-1.0.4 downloaded "
+echo " [*] openvas-smb-1.0.4 downloaded "
 #wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
 #wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
 wget https://svn.wald.intevation.org/svn/openvas/branches/tools-attic/openvas-check-setup ${NOCERT}
-echo " _> openvas-check-setup script downloaded "
+echo " [*] openvas-check-setup script downloaded "
 find . -name \*.gz -exec tar zxvfp {} \;
-echo " _> downloaded files unpacked and folders created"
+echo " [*] downloaded files unpacked and folders created"
 chmod +x openvas-check-setup
-echo " _> openvas_check_setup is now executable"
+echo " [*] openvas_check_setup is now executable"
 rm *.tar.gz
-echo " _> *.tar.gz files removed" 
+echo " [*] *.tar.gz files removed" 
 echo " "
 
 sleep 10
@@ -80,7 +80,7 @@ sleep 20
 echo " "
 echo -e " ${GRE} ---------- CONFIGURATION ---------- ${NOC} "
 cp /etc/redis/redis.conf /etc/redis/redis.orig
-echo " _> redis.conf backup complete"
+echo " [*] redis.conf backup complete"
 #echo "unixsocket /tmp/redis.sock" >> /etc/redis/redis.conf
 sed -i -- 's:# unixsocket /var/run/redis/redis.sock:unixsocket /tmp/redis.sock:g' /etc/redis/redis.conf
 echo " [*] redis set to use unixsocket"
@@ -143,7 +143,7 @@ echo " [*] gsad started with --http-only"
 echo " "
 
 
-echo "OpenVAS ready for use!"
+echo " [*] OpenVAS ready for use!"
 echo " "
 echo "Next Step: Create a user"
 echo "\${GRE} [*] Whats the name of the new user? \${NOC}"
@@ -151,9 +151,9 @@ read name
 openvasmd --create-user=$name --role=Admin
 echo " [*] New user with role \'Admin\' created "
 echo " "
-echo "\${GRE} [*] Set new password for $name: \${NOC}"
+echo "\${GRE} Set new password for $name: \${NOC}"
 read pw
 openvasmd --user=$name --new-password=$pw
-echo " [*] New user created "
+echo " [*] New password set "
 echo " "
 echo "[----------]  HAPPY SCANNING  [----------]"
