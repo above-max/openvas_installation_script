@@ -10,5 +10,5 @@ script has been tested on Ubuntu Server 16.04.5
 
 1. Download script file
 2. chmod +x _ovas9_installer.sh
-3. sudo -su
+3. sudo su
 4. ./_ovas9_installer.sh
