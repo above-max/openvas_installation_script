@@ -8,11 +8,14 @@ RED='\033[0;31m'
 GRE='\033[0;32m'
 NOC='\033[0m'
 
-declare -a _package_list=("-libraries-" "-scanner-" "-manager-" "-cli-" "-smb-")
+declare -a _package_list=("-libraries-" "-scanner-" "-manager-" "-cli-")# "-smb-")
 
 echo " "
+echo -e " ${GRE} ---------- RUNNING UPDATE ---------- ${NOC} "
+apt-get update && apt-get upgrade -y
+sleep 10
 echo -e " ${GRE} ---------- DOWNLOADING DEPENDENCIES ---------- ${NOC} "
-  apt install -y build-essential cmake gcc-mingw-w64 libgnutls28-dev perl-base heimdal-dev libpopt-dev libglib2.0-dev python-setuptools python-polib checkinstall libssh-dev libpcap-dev libxslt1-dev libgpgme11-dev uuid-dev bison libksba-dev libhiredis-dev libsnmp-dev libgcrypt20-dev libldap2-dev  libfreeradius-client-dev doxygen xmltoman sqlfairy sqlite3 redis-server gnutls-bin libsqlite3-dev texlive texlive-lang-german texlive-lang-english texlive-latex-recommended texlive-latex-extra libmicrohttpd-dev libxml2-dev libxslt1.1 xsltproc flex clang nmap rpm nsis alien
+  apt install -y build-essential cmake gcc-mingw-w64 libgnutls28-dev perl-base heimdal-dev libpopt-dev libglib2.0-dev python-setuptools python-polib libssh-dev libpcap-dev libxslt1-dev libgpgme11-dev uuid-dev bison libksba-dev libhiredis-dev libsnmp-dev libgcrypt20-dev libldap2-dev  libfreeradius-client-dev doxygen xmltoman sqlfairy sqlite3 redis-server gnutls-bin libsqlite3-dev texlive texlive-lang-german texlive-lang-english texlive-latex-recommended texlive-latex-extra libmicrohttpd-dev libxml2-dev libxslt1.1 xsltproc flex clang nmap rpm nsis alien
 
 sleep 10
 
@@ -28,9 +31,9 @@ wget http://wald.intevation.org/frs/download.php/2429/greenbone-security-assista
 echo " [*] greenbone-security-assistent-7.0.2 downloaded "
 wget http://wald.intevation.org/frs/download.php/2397/openvas-cli-1.4.5.tar.gz ${NOCERT}
 echo " [*] openvas-cli-1.4.5 downloaded "
-wget https://github.com/greenbone/openvas-smb/archive/v1.0.4.tar.gz ${NOCERT}
+#wget https://github.com/greenbone/openvas-smb/archive/v1.0.4.tar.gz ${NOCERT}
 # use openvas-smb-1.0.4 for compatability. Other version will lead to errors during install becauseof undefined reference to `gnutls_certificate_type_set_priority`
-echo " [*] openvas-smb-1.0.4 downloaded "
+#echo " [*] openvas-smb-1.0.4 downloaded "
 #wget http://wald.intevation.org/frs/download.php/2401/ospd-1.2.0.tar.gz ${NOCERT}
 #wget http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.tar.gz ${NOCERT}
 wget https://svn.wald.intevation.org/svn/openvas/branches/tools-attic/openvas-check-setup ${NOCERT}
@@ -58,9 +61,9 @@ do
     cmake ..
     echo " [*] run make"
     make
-    echo " [*] run make install and cd out of openvas-$p"
+    echo " [*] run make install and cd out of openvas$p"
     make install && cd ../../
-    echo " [*] $p installed"
+    echo -e " ${GRE} --- [*] $p installed --- ${NOC} "
     echo " "
     sleep 5
 done
@@ -114,11 +117,13 @@ ldconfig
 /usr/local/sbin/greenbone-certdata-sync
 sleep 5
 echo " [*] certdata sync done"
-echo " "
 
 echo " "
 echo -e " \${GRE} ---------- LAUNCHING SCANNER ---------- \${NOC} "
-service redis-server restart
+service redis-server stop
+sleep 10
+redis-server /etc/redis/redis.conf
+/etc/init.d/redis-server start
 sleep 30
 sudo ldconfig
 sudo /usr/local/sbin/openvassd
@@ -130,12 +135,12 @@ sleep 20
 sudo ldconfig
 sudo /usr/local/sbin/openvasmd --rebuild --progress
 sleep 10
-echo -e " \${GRE} ---------- LAUNCHING MANAGER ---------- \${NOC} "
+echo -e " \${GRE} ---------- LAUNCHING MANAGER ---------- \${NOC}"
 sudo ldconfig
 sudo /usr/local/sbin/openvasmd
 
 echo " "
-echo -e " \${GRE} ---------- LAUNCHING UI ---------- \${NOC} "
+echo -e " \${GRE} ---------- LAUNCHING UI ---------- \${NOC}"
 sleep 30
 sudo ldconfig
 sudo /usr/local/sbin/gsad --http-only
@@ -146,12 +151,12 @@ echo " "
 echo " [*] OpenVAS ready for use!"
 echo " "
 echo "Next Step: Create a user"
-echo "\${GRE} [*] Whats the name of the new user? \${NOC}"
+echo -e " \${GRE} ---------- [*] Whats the name of the new user? ---------- \${NOC}"
 read name
 openvasmd --create-user=$name --role=Admin
 echo " [*] New user with role \'Admin\' created "
 echo " "
-echo "\${GRE} Set new password for $name: \${NOC}"
+echo -e " \${GRE} ---------- Set new password for $name: ---------- \${NOC}"
 read pw
 openvasmd --user=$name --new-password=$pw
 echo " [*] New password set "
